@@ -1,6 +1,10 @@
 import streamlit as st
 from datetime import datetime
+from html import escape
+from os import getenv
+from pathlib import Path
 from typing import Dict, List, Optional
+from urllib.parse import urlsplit
 import random
 import time
 
@@ -228,44 +232,71 @@ Could you tell us what you're interested in? We want to make sure this is actual
 
 st.set_page_config(
     page_title="Human-Scale AI Demo",
-    page_icon="🤖",
+    page_icon="🎸",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-st.title("🤖 Human-Scale AI Demo")
-st.markdown("""
-**Gatherrhiza Labs | Gather IRL Rock Club | Mozilla Incubator Grant**
+st.html(Path(__file__).with_name("theme.css"))
 
-This demo demonstrates the three Human-Scale AI principles:
-
-- **SMALL**: 7B parameter model running locally (~15W, $5/month)
-- **INTENTIONAL**: Opt-in boundaries, you control your data  
-- **TAILORED**: Built for music fans in a hyperlocal community
+# EDITABLE: DEMO HEADER START
+# Set GATHERRHIZA_HOMEPAGE_URL to show a link back to your published homepage.
+homepage = getenv("GATHERRHIZA_HOMEPAGE_URL", "").strip()
+try:
+    parsed_homepage = urlsplit(homepage)
+    valid_homepage = parsed_homepage.scheme in {"http", "https"} and bool(parsed_homepage.hostname)
+except ValueError:
+    valid_homepage = False
+home_link = (
+    f'<a class="gr-home" href="{escape(homepage, quote=True)}" target="_blank" rel="noopener">'
+    'Labs homepage <span aria-hidden="true">↗</span></a>'
+    if valid_homepage else ""
+)
+st.html(f"""
+<header class="gr-masthead">
+  <div class="gr-brand">
+    <span class="gr-mark" aria-hidden="true"></span>
+    <span>GatherRhiza Labs</span>
+  </div>
+  {home_link}
+</header>
+<section class="gr-hero" aria-labelledby="gr-title">
+  <div class="gr-hero-copy">
+    <p class="gr-kicker">Gather IRL Rock Club</p>
+    <h1 id="gr-title">Human-Scale <em>AI Demo</em></h1>
+    <p>See how a small, local AI could help a neighborhood music club organize a listening session, respect members’ privacy choices, and leave the gathering itself to people.</p>
+    <a class="gr-start" href="#interactive-demo">Try the interactive demo <span aria-hidden="true">↓</span></a>
+    <p class="gr-note">Mozilla Incubator Grant · Simulated AI, no real invitations sent</p>
+  </div>
+  <div class="gr-network" aria-hidden="true"></div>
+</section>
 """)
+# EDITABLE: DEMO HEADER END
 
 # Principles Section
-st.subheader("📚 The Three Human-Scale AI Principles")
+st.subheader("The Three Human-Scale AI Principles")
+st.caption("The hardware, power, and cost figures are illustrative estimates, not measurements from this hosted demo.")
 
 col1, col2, col3 = st.columns(3)
 
-with col1:
+# EDITABLE: PRINCIPLE CARDS START
+with col1, st.container(key="principle_small"):
     st.markdown("""
-**<span style='color:#28a745'>SMALL</span>**
+### Small
 
 Efficiency over scale. Small models deliver powerful functionality.
 
-| Metric | Traditional | Our Approach |
-|--------|------------|-------------|
-| Model Size | 100B+ params | **7B params** |
+| Metric | Example baseline | Local target |
+|--------|------------------|--------------|
+| Size | 100B+ params | **7B params** |
 | Power | 2,000W | **~15W** |
 | Cost | $500/month | **$5/month** |
 | Privacy | Extracted | **Protected** |
-    """, unsafe_allow_html=True)
+    """)
 
-with col2:
+with col2, st.container(key="principle_intentional"):
     st.markdown("""
-**<span style='color:#ffc107'>INTENTIONAL</span>**
+### Intentional
 
 Agency over automation. Users control their data.
 
@@ -276,11 +307,11 @@ Agency over automation. Users control their data.
 | **Level 3** | Public sharing |
 
 *No dark patterns. No manipulation.*
-    """, unsafe_allow_html=True)
+    """)
 
-with col3:
+with col3, st.container(key="principle_tailored"):
     st.markdown("""
-**<span style='color:#dc3545'>TAILORED</span>**
+### Tailored
 
 Specific over universal. Built for THIS community.
 
@@ -288,15 +319,16 @@ Specific over universal. Built for THIS community.
 - Specific demographic (music fans)
 - Local deployment
 - **No one-size-fits-all**
-    """, unsafe_allow_html=True)
+    """)
+# EDITABLE: PRINCIPLE CARDS END
 
 st.divider()
 
 # Interactive Demo Section
-st.subheader("⚡ Interactive Demo")
+st.subheader("Interactive Demo", anchor="interactive-demo")
 
 # Phase 1: Community Setup
-with st.expander("🔧 Phase 1: Community Setup"):
+with st.expander("Phase 1: Community Setup"):
     st.markdown("### Add Community Members")
     st.markdown("Set privacy levels: 1=Contactable, 2=Community data, 3=Public")
     
@@ -373,7 +405,7 @@ with st.expander("🔧 Phase 1: Community Setup"):
             """)
 
 # Phase 2: Event Creation
-with st.expander("🎯 Phase 2: Event Creation"):
+with st.expander("Phase 2: Event Creation"):
     st.markdown("### Create a New Event")
     st.markdown("**Note: AI handles logistics, humans run the actual event**")
     
@@ -393,7 +425,7 @@ with st.expander("🎯 Phase 2: Event Creation"):
         if selected:
             contact_ids.append(member['id'])
     
-    if st.button("Create Event"):
+    if st.button("Create Event", type="primary"):
         with st.spinner("Creating event and sending opt-in invitations..."):
             time.sleep(1.5)  # Simulate processing
         
@@ -420,7 +452,7 @@ with st.expander("🎯 Phase 2: Event Creation"):
         st.session_state["event"] = event
 
 # Phase 3: RSVPs & Connections
-with st.expander("👥 Phase 3: RSVPs & Connections"):
+with st.expander("Phase 3: RSVPs & Connections"):
     if not members_data:
         st.error("Please add community members first!")
     elif not st.session_state.get("event_created"):
@@ -443,7 +475,7 @@ with st.expander("👥 Phase 3: RSVPs & Connections"):
             )
             rsvps[member["id"]] = rsvp
         
-        if st.button("Confirm RSVPs"):
+        if st.button("Confirm RSVPs", type="primary"):
             confirmed_count = sum(1 for r in rsvps.values() if r)
             event["attendees"] = [mid for mid, going in rsvps.items() if going]
             if confirmed_count >= 5:
@@ -495,7 +527,7 @@ with st.expander("👥 Phase 3: RSVPs & Connections"):
                 st.info("No connection suggestions (privacy boundaries or no shared interests)")
 
 # Phase 4: Event Metrics
-with st.expander("📊 Phase 4: Impact Metrics"):
+with st.expander("Phase 4: Impact Metrics"):
     st.markdown("### Community Health Dashboard")
     
     stats_manager = PrivacyManager()
@@ -520,14 +552,14 @@ with st.expander("📊 Phase 4: Impact Metrics"):
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("**<span style='color:#28a745'>SMALL</span>**", unsafe_allow_html=True)
+        st.html('<strong class="gr-label gr-small">Small</strong>')
         st.markdown(f"- **Model:** 7B (simulated)")
         st.markdown(f"- **Power:** ~15W")
         st.markdown(f"- **Cost:** $5-10/mo")
         st.markdown("- **Local deployment**")
     
     with col2:
-        st.markdown("**<span style='color:#ffc107'>INTENTIONAL</span>**", unsafe_allow_html=True)
+        st.html('<strong class="gr-label gr-intentional">Intentional</strong>')
         st.markdown("Privacy levels enforced:")
         for level in range(1, 4):
             count = sum(1 for m in members_data if m.get("privacy_level", 0) == level)
@@ -538,14 +570,14 @@ with st.expander("📊 Phase 4: Impact Metrics"):
         st.markdown("- **User controls**")
     
     with col3:
-        st.markdown("**<span style='color:#dc3545'>TAILORED</span>**", unsafe_allow_html=True)
+        st.html('<strong class="gr-label gr-tailored">Tailored</strong>')
         st.markdown("- **One community**")
         st.markdown("- **Specific demographic** (music fans)")
         st.markdown("- **Local deployment**")
         st.markdown("- **No vendor lock-in**")
 
 # Architecture Section
-with st.expander("🏗️ System Architecture"):
+with st.expander("System Architecture"):
     st.markdown("""
 **How it works:**
 
@@ -590,7 +622,7 @@ The system proves that **small local models + privacy controls = human-scale AI*
     """)
 
 # Technical Specs
-with st.expander("⚙️ Technical Specifications"):
+with st.expander("Technical Specifications"):
     st.markdown("### Model Stack")
     
     st.markdown("""```yaml
@@ -630,7 +662,7 @@ def can_contact(requester_id, target_id):
     """)
 
 # About Section
-with st.expander("ℹ️ About This Project"):
+with st.expander("About This Project"):
     st.markdown("""
 **Gather IRL Rock Club** is a project by GatherRhiza Labs building **distributable, sovereign AI infrastructure for hyperlocal community building.**
 
@@ -659,7 +691,7 @@ This is building the alternative to "AI for extraction."
     """)
 
 # Quick Start Guide
-with st.expander("📖 Quick Start Guide"):
+with st.expander("Quick Start Guide"):
     st.markdown("""
 ### How to Use This Demo:
 
@@ -700,7 +732,7 @@ Let's talk about whether this is the future of AI!
 # Final CTA
 st.divider()
 
-with st.expander("🎯 Next Steps"):
+with st.expander("Next Steps"):
     st.markdown("""
 **Ready to see this live?**
 

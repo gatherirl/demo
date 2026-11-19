@@ -1,0 +1,212 @@
+/* GatherRhiza presentation layer. Streamlit widget colors are in .streamlit/config.toml. */
+:root {
+  --gr-ink: #21150f;
+  --gr-muted: #675b56;
+  --gr-cream: #fff8ef;
+  --gr-paper: #fffdf8;
+  --gr-peach: #fff2e5;
+  --gr-lilac: #f5ecff;
+  --gr-mint: #eaf8ef;
+  --gr-green: #0c7a63;
+  --gr-deep: #075746;
+  --gr-purple: #7131c4;
+  --gr-rust: #944011;
+  --gr-orange: #ff7a18;
+  --gr-rule: #e5d8ca;
+  --gr-font: "Manrope", Arial, sans-serif;
+  --gr-display: "Instrument Serif", Georgia, serif;
+  --gr-xs: .8125rem;
+  --gr-sm: .9375rem;
+  --gr-body: 1rem;
+  --gr-xl: clamp(1.8rem, 1.45rem + 1.45vw, 2.5rem);
+  --gr-hero-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  --gr-pad: clamp(1rem, 3vw, 2.5rem);
+  --gr-card-radius: 1.25rem;
+  --gr-shadow: 0 10px 30px rgb(49 25 12 / .045);
+}
+
+.gr-masthead, .gr-hero {
+  font-family: var(--gr-font);
+  color: var(--gr-ink);
+}
+
+[data-testid="stMainBlockContainer"] {
+  max-width: 74rem;
+  padding: 4.35rem var(--gr-pad) 4rem;
+}
+[data-testid="stMainBlockContainer"] h2 {
+  font-size: var(--gr-xl);
+  font-weight: 400;
+  line-height: 1.1;
+  scroll-margin-top: 4rem;
+}
+[data-testid="stMainBlockContainer"] h3 { line-height: 1.16; }
+
+.gr-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  border-bottom: 1px solid var(--gr-rule);
+  padding-bottom: .875rem;
+  margin-bottom: 1.125rem;
+}
+.gr-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+.gr-brand .gr-mark {
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: var(--gr-green);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'%3E%3Ccircle cx='32' cy='32' r='26' stroke='black' stroke-width='2.8'/%3E%3Cg fill='black'%3E%3Ccircle cx='32' cy='17' r='6'/%3E%3Ccircle cx='18' cy='40' r='6' opacity='.72'/%3E%3Ccircle cx='46' cy='40' r='6' opacity='.72'/%3E%3C/g%3E%3Cpath d='M32 23v11M23 37h18M22 40c3-7 8-10 10-10 2 0 7 3 10 10' stroke='black' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.gr-masthead a.gr-home, .gr-hero a.gr-start {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 44px;
+  padding: .54rem 1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: var(--gr-sm);
+  text-decoration: none;
+}
+.gr-masthead a.gr-home { color: var(--gr-deep); border: 1px solid var(--gr-rule); }
+.gr-masthead a.gr-home:hover { background: var(--gr-mint); }
+.gr-hero a.gr-start { background: var(--gr-deep); color: #fffdf8; }
+.gr-hero a.gr-start:hover { background: #043d31; }
+.gr-hero a:focus-visible, .gr-masthead a:focus-visible {
+  outline: 2px solid var(--gr-purple);
+  outline-offset: 3px;
+}
+
+.gr-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.37fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+  padding: clamp(1.2rem, 4vw, 2.75rem);
+  margin-bottom: .75rem;
+  border-radius: 1.75rem;
+  border: 1px solid var(--gr-rule);
+  background: var(--gr-paper);
+  box-shadow: var(--gr-shadow);
+}
+.gr-hero .gr-kicker {
+  width: fit-content;
+  margin: 0 0 .85rem;
+  padding: .4rem .72rem;
+  border-radius: 999px;
+  color: var(--gr-deep);
+  background: var(--gr-mint);
+  font-size: var(--gr-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+}
+.gr-hero h1 {
+  padding: 0;
+  margin: 0 0 .85rem;
+  font: 400 var(--gr-hero-size)/.98 var(--gr-display);
+  letter-spacing: -.02em;
+  color: var(--gr-ink);
+}
+.gr-hero h1 em { color: var(--gr-green); font-weight: inherit; }
+.gr-hero-copy > p:not(.gr-kicker, .gr-note) {
+  color: var(--gr-muted);
+  font-size: var(--gr-body);
+  max-width: 48ch;
+  line-height: 1.65;
+  margin: 0 0 1.125rem;
+}
+.gr-hero .gr-note { margin: .75rem 0 0; color: var(--gr-muted); font-size: var(--gr-xs); }
+.gr-network {
+  display: block;
+  width: 100%;
+  max-width: 25rem;
+  aspect-ratio: 1.62;
+  justify-self: center;
+  border-radius: var(--gr-card-radius);
+  background-color: var(--gr-lilac);
+  background-image: radial-gradient(#cbb2e9 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+.gr-network::before {
+  content: "";
+  display: block;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 380 235'%3E%3Cg fill='none' stroke='%239874b3' stroke-linecap='round'%3E%3Cpath d='M18 173C62 161 105 140 161 129S249 99 357 48M30 59C91 78 116 91 161 129S266 168 345 193M74 215C94 186 133 161 161 129S194 56 229 23M83 25C102 60 127 90 161 129M205 211C212 184 196 157 161 129M311 117C270 119 241 114 215 113M301 210C286 183 262 169 241 161' stroke-width='2'/%3E%3Cpath d='M44 166Q51 148 73 126M82 151Q73 171 49 191M112 143Q128 111 111 74M91 81Q72 88 51 83M124 100Q156 82 157 48M182 146Q169 177 155 185M206 169Q241 182 255 205M281 82Q282 62 270 47M310 69Q327 78 349 79M283 176Q305 168 318 152M190 78Q183 53 191 37' stroke-width='1.2'/%3E%3C/g%3E%3Cg fill='%230c7a63'%3E%3Ccircle cx='161' cy='129' r='13'/%3E%3Ccircle cx='357' cy='48' r='7'/%3E%3Ccircle cx='74' cy='215' r='7'/%3E%3Ccircle cx='311' cy='117' r='5'/%3E%3C/g%3E%3Cg fill='%238b42ff'%3E%3Ccircle cx='30' cy='59' r='9'/%3E%3Ccircle cx='345' cy='193' r='11'/%3E%3Ccircle cx='83' cy='25' r='5'/%3E%3Ccircle cx='157' cy='48' r='4'/%3E%3C/g%3E%3Cg fill='%23ff7a18'%3E%3Ccircle cx='229' cy='23' r='8'/%3E%3Ccircle cx='18' cy='173' r='6'/%3E%3Ccircle cx='205' cy='211' r='9'/%3E%3Ccircle cx='318' cy='152' r='4'/%3E%3C/g%3E%3C/svg%3E") center / 89% 89% no-repeat;
+}
+
+/* Keyed Streamlit containers keep each article's native markdown and tables. */
+.st-key-principle_small, .st-key-principle_intentional, .st-key-principle_tailored {
+  height: 100%;
+  padding: clamp(.85rem, 1.6vw, 1.3rem);
+  border: 1px solid var(--gr-rule);
+  border-radius: var(--gr-card-radius);
+}
+.st-key-principle_small { background: var(--gr-mint); }
+.st-key-principle_intentional { background: var(--gr-lilac); }
+.st-key-principle_tailored { background: var(--gr-peach); }
+.st-key-principle_small h3, .gr-small { color: var(--gr-deep); }
+.st-key-principle_intentional h3, .gr-intentional { color: var(--gr-purple); }
+.st-key-principle_tailored h3, .gr-tailored { color: var(--gr-rust); }
+.st-key-principle_small h3, .st-key-principle_intentional h3, .st-key-principle_tailored h3 {
+  font: 400 1.95rem/1.08 var(--gr-display);
+  padding-top: 0;
+}
+.st-key-principle_small table, .st-key-principle_intentional table {
+  width: 100%;
+  background: rgb(255 253 248 / .68);
+  font-size: var(--gr-xs);
+}
+.st-key-principle_small :is(th, td), .st-key-principle_intentional :is(th, td) {
+  padding: .48rem .5rem;
+}
+.gr-label { font-size: var(--gr-sm); }
+
+[data-testid="stExpander"] details {
+  background: var(--gr-paper);
+  border: 1px solid var(--gr-rule);
+  border-radius: .9rem;
+}
+[data-testid="stExpander"] summary {
+  min-height: 3rem;
+  padding: .67rem 1rem;
+  border-radius: .9rem;
+}
+[data-testid="stExpander"] summary p { font-weight: 800; }
+[data-testid="stExpander"] summary:hover { background: var(--gr-mint); }
+[data-testid="stExpander"] details[open] > summary {
+  background: var(--gr-mint);
+  border-bottom: 1px solid var(--gr-rule);
+  border-radius: .85rem .85rem 0 0;
+}
+[data-testid="stExpanderDetails"] { padding: 1rem; }
+[data-testid="stExpanderDetails"] [data-testid="stExpander"] details { background: var(--gr-lilac); }
+[data-testid="stMetric"], [data-testid="stForm"] {
+  background: var(--gr-peach);
+  border: 1px solid var(--gr-rule);
+  border-radius: .85rem;
+}
+[data-testid="stMetric"] { padding: .85rem 1rem; }
+[data-testid="stMetricValue"] { color: var(--gr-deep); }
+.stButton button, .stFormSubmitButton button { min-height: 44px; font-weight: 750; }
+
+@media (max-width: 830px) {
+  [data-testid="stHorizontalBlock"]:has(.st-key-principle_small) { flex-direction: column; }
+  [data-testid="stHorizontalBlock"]:has(.st-key-principle_small) > [data-testid="stColumn"] {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+@media (max-width: 620px) {
+  .gr-hero { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .gr-network { max-width: 22rem; height: clamp(6.5rem, 34vw, 11rem); }
+}
